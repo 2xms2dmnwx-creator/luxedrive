@@ -8,107 +8,221 @@
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   background: white;
   color: black;
 }
 
-/* Intro Screen */
+/* INTRO */
 #intro {
   position: fixed;
   width: 100%;
   height: 100%;
   background: white;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  z-index: 999;
+}
+
+button {
+  padding: 12px 28px;
+  border: none;
+  background: black;
+  color: white;
+  cursor: pointer;
+}
+
+/* HERO */
+.hero {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.hero h1 {
+  font-size: 42px;
+}
+
+/* CAR SECTIONS */
+.car {
+  height: 100vh;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-bottom: 1px solid #eee;
+  transition: all 0.4s ease;
 }
 
-#intro h1 {
+.car h2 {
   font-size: 32px;
 }
 
-#intro p {
-  max-width: 300px;
-  text-align: center;
+.car p {
   color: gray;
 }
 
-#intro button {
-  margin-top: 20px;
-  padding: 12px 30px;
-  background: black;
-  color: white;
-  border: none;
+.car:hover {
+  background: #f7f7f7;
 }
 
-/* Main */
-header {
-  padding: 20px;
+.selected {
+  border: 2px solid black;
 }
 
-.hero {
-  text-align: center;
-  margin-top: 100px;
-}
-
-.button {
-  padding: 12px 30px;
-  background: black;
-  color: white;
-  border: none;
-}
-
-/* Booking */
+/* BOOKING */
 .booking {
-  margin: 50px;
+  padding: 40px;
   text-align: center;
 }
 
 input {
   display: block;
   margin: 10px auto;
-  padding: 10px;
+  padding: 12px;
   width: 80%;
+  max-width: 320px;
+}
+
+/* PAYMENT */
+#payment {
+  display: none;
+  text-align: center;
+  padding: 40px;
+}
+
+/* ADMIN */
+#admin {
+  display: none;
+  padding: 20px;
 }
 </style>
 </head>
 
 <body>
 
+<!-- INTRO -->
 <div id="intro">
   <h1>LuxeDrive</h1>
-  <p>Premium electric ride booking platform.</p>
+  <p>Premium Electric Ride Booking Platform</p>
   <button onclick="enterSite()">Accept & Continue</button>
 </div>
 
-<header>
-  <h2>LuxeDrive</h2>
-</header>
+<!-- HERO -->
+<div class="hero">
+  <h1>LuxeDrive</h1>
+  <p>Luxury electric mobility, redefined</p>
+</div>
 
-<section class="hero">
-  <h1>Luxury Electric Rides</h1>
-  <button class="button" onclick="scrollToBooking()">Book Ride</button>
-</section>
+<!-- VEHICLES -->
+<div class="car" onclick="selectCar(this, 'Model S - $120')">
+  <h2>Model S</h2>
+  <p>$120 per ride</p>
+</div>
 
-<section class="booking" id="booking">
-  <h2>Book Now</h2>
-  <input placeholder="Name">
-  <input placeholder="Email">
+<div class="car" onclick="selectCar(this, 'Model 3 - $90')">
+  <h2>Model 3</h2>
+  <p>$90 per ride</p>
+</div>
+
+<div class="car" onclick="selectCar(this, 'Model X - $150')">
+  <h2>Model X</h2>
+  <p>$150 per ride</p>
+</div>
+
+<div class="car" onclick="selectCar(this, 'Model Y - $110')">
+  <h2>Model Y</h2>
+  <p>$110 per ride</p>
+</div>
+
+<div class="car" onclick="selectCar(this, 'Cybertruck - $200')">
+  <h2>Cybertruck</h2>
+  <p>$200 per ride</p>
+</div>
+
+<!-- BOOKING -->
+<div class="booking">
+  <h2>Book Your Ride</h2>
+  <input id="name" placeholder="Full Name">
+  <input id="email" placeholder="Email">
   <input placeholder="Pickup Location">
   <input placeholder="Drop-off Location">
   <input type="datetime-local">
-  <button class="button">Confirm Booking</button>
-</section>
+  <button onclick="confirmBooking()">Continue</button>
+</div>
+
+<!-- PAYMENT -->
+<div id="payment">
+  <h2>Complete Payment</h2>
+  <p id="summary"></p>
+
+  <p><b>CashApp:</b> $yourname</p>
+  <p><b>PayPal:</b> paypal.me/yourname</p>
+
+  <button onclick="finishBooking()">I Have Paid</button>
+</div>
+
+<!-- ADMIN -->
+<div id="admin">
+  <h2>Admin Dashboard</h2>
+  <div id="bookings"></div>
+</div>
 
 <script>
+let selectedCar = "";
+
 function enterSite() {
-  document.getElementById('intro').style.display = 'none';
+  document.getElementById("intro").style.display = "none";
 }
 
-function scrollToBooking() {
-  document.getElementById('booking').scrollIntoView({behavior:'smooth'});
+function selectCar(el, car) {
+  document.querySelectorAll(".car").forEach(c => c.classList.remove("selected"));
+  el.classList.add("selected");
+  selectedCar = car;
+}
+
+function confirmBooking() {
+  let name = document.getElementById("name").value;
+  let email = document.getElementById("email").value;
+
+  if (!selectedCar) {
+    alert("Please select a vehicle");
+    return;
+  }
+
+  let booking = { name, email, car: selectedCar };
+
+  let data = JSON.parse(localStorage.getItem("bookings") || "[]");
+  data.push(booking);
+  localStorage.setItem("bookings", JSON.stringify(data));
+
+  document.getElementById("summary").innerText =
+    name + " booked " + selectedCar;
+
+  document.getElementById("payment").style.display = "block";
+}
+
+function finishBooking() {
+  alert("Booking received. Confirmation email opening...");
+
+  window.location.href =
+    "mailto:yourbrand.bookings@gmail.com?subject=LuxeDrive Booking&body=New booking request received.";
+
+  loadAdmin();
+}
+
+function loadAdmin() {
+  let data = JSON.parse(localStorage.getItem("bookings") || "[]");
+  let container = document.getElementById("bookings");
+  container.innerHTML = "";
+
+  data.forEach(b => {
+    container.innerHTML += `<p>${b.name} - ${b.car}</p>`;
+  });
+
+  document.getElementById("admin").style.display = "block";
 }
 </script>
 
