@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LuxeDrive</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: white;
+  color: black;
+}
+
+/* Intro Screen */
+#intro {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#intro h1 {
+  font-size: 32px;
+}
+
+#intro p {
+  max-width: 300px;
+  text-align: center;
+  color: gray;
+}
+
+#intro button {
+  margin-top: 20px;
+  padding: 12px 30px;
+  background: black;
+  color: white;
+  border: none;
+}
+
+/* Main */
+header {
+  padding: 20px;
+}
+
+.hero {
+  text-align: center;
+  margin-top: 100px;
+}
+
+.button {
+  padding: 12px 30px;
+  background: black;
+  color: white;
+  border: none;
+}
+
+/* Booking */
+.booking {
+  margin: 50px;
+  text-align: center;
+}
+
+input {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 80%;
+}
+</style>
+</head>
+
+<body>
+
+<div id="intro">
+  <h1>LuxeDrive</h1>
+  <p>Premium electric ride booking platform.</p>
+  <button onclick="enterSite()">Accept & Continue</button>
+</div>
+
+<header>
+  <h2>LuxeDrive</h2>
+</header>
+
+<section class="hero">
+  <h1>Luxury Electric Rides</h1>
+  <button class="button" onclick="scrollToBooking()">Book Ride</button>
+</section>
+
+<section class="booking" id="booking">
+  <h2>Book Now</h2>
+  <input placeholder="Name">
+  <input placeholder="Email">
+  <input placeholder="Pickup Location">
+  <input placeholder="Drop-off Location">
+  <input type="datetime-local">
+  <button class="button">Confirm Booking</button>
+</section>
+
+<script>
+function enterSite() {
+  document.getElementById('intro').style.display = 'none';
+}
+
+function scrollToBooking() {
+  document.getElementById('booking').scrollIntoView({behavior:'smooth'});
+}
+</script>
+
+</body>
+</html>
