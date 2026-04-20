@@ -3,99 +3,121 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LuxeDrive</title>
+<title>LuxeDrive Auto</title>
 
 <style>
+html {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: -apple-system, sans-serif;
+}
+
+/* NAV */
+.nav {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 30px;
+  background: rgba(255,255,255,0.9);
+  z-index: 1000;
+}
+
+.nav a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: black;
+}
+
+/* SECTION */
+.section {
+  height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: rgba(0,0,0,0.3);
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+}
+
+h1 {
+  font-size: 42px;
+}
+
+.price {
+  margin: 10px 0;
+}
+
+/* BUTTONS */
+.btn {
+  padding: 12px 24px;
+  margin: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.primary {
+  background: black;
+  color: white;
+}
+
+.secondary {
   background: white;
   color: black;
 }
 
-/* INTRO */
-#intro {
+/* MODAL */
+#modal {
+  display: none;
   position: fixed;
   width: 100%;
   height: 100%;
+  background: rgba(0,0,0,0.7);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-box {
   background: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-  z-index: 999;
-}
-
-button {
-  padding: 12px 28px;
-  border: none;
-  background: black;
-  color: white;
-  cursor: pointer;
-}
-
-/* HERO */
-.hero {
-  text-align: center;
-  padding: 80px 20px;
-}
-
-.hero h1 {
-  font-size: 42px;
-}
-
-/* CAR SECTIONS */
-.car {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-bottom: 1px solid #eee;
-  transition: all 0.4s ease;
-}
-
-.car h2 {
-  font-size: 32px;
-}
-
-.car p {
-  color: gray;
-}
-
-.car:hover {
-  background: #f7f7f7;
-}
-
-.selected {
-  border: 2px solid black;
-}
-
-/* BOOKING */
-.booking {
-  padding: 40px;
+  padding: 30px;
+  width: 90%;
+  max-width: 400px;
   text-align: center;
 }
 
 input {
-  display: block;
-  margin: 10px auto;
+  width: 100%;
   padding: 12px;
-  width: 80%;
-  max-width: 320px;
-}
-
-/* PAYMENT */
-#payment {
-  display: none;
-  text-align: center;
-  padding: 40px;
+  margin: 10px 0;
 }
 
 /* ADMIN */
 #admin {
   display: none;
+  background: white;
+  color: black;
   padding: 20px;
 }
 </style>
@@ -103,123 +125,119 @@ input {
 
 <body>
 
-<!-- INTRO -->
-<div id="intro">
-  <h1>LuxeDrive</h1>
-  <p>Premium Electric Ride Booking Platform</p>
-  <button onclick="enterSite()">Accept & Continue</button>
+<div class="nav">
+  <b>LuxeDrive Auto</b>
+  <div>
+    <a href="#s">S</a>
+    <a href="#3">3</a>
+    <a href="#x">X</a>
+    <a href="#y">Y</a>
+    <a href="#c">Cyber</a>
+  </div>
 </div>
 
-<!-- HERO -->
-<div class="hero">
-  <h1>LuxeDrive</h1>
-  <p>Luxury electric mobility, redefined</p>
+<!-- MODEL S -->
+<div id="s" class="section" style="background-image:url('https://images.unsplash.com/photo-1619767886558-efdc259cde1a');">
+  <div class="overlay"></div>
+  <div class="content">
+    <h1>Model S</h1>
+    <p>$89,990</p>
+    <button class="btn primary" onclick="buy('Model S','$89,990')">Buy Now</button>
+  </div>
 </div>
 
-<!-- VEHICLES -->
-<div class="car" onclick="selectCar(this, 'Model S - $120')">
-  <h2>Model S</h2>
-  <p>$120 per ride</p>
+<!-- MODEL 3 -->
+<div id="3" class="section" style="background-image:url('https://images.unsplash.com/photo-1593941707882-a5bba8b3a6c5');">
+  <div class="overlay"></div>
+  <div class="content">
+    <h1>Model 3</h1>
+    <p>$38,990</p>
+    <button class="btn primary" onclick="buy('Model 3','$38,990')">Buy Now</button>
+  </div>
 </div>
 
-<div class="car" onclick="selectCar(this, 'Model 3 - $90')">
-  <h2>Model 3</h2>
-  <p>$90 per ride</p>
+<!-- MODEL X -->
+<div id="x" class="section" style="background-image:url('https://images.unsplash.com/photo-1601924582975-7e5b8a3c6b5b');">
+  <div class="overlay"></div>
+  <div class="content">
+    <h1>Model X</h1>
+    <p>$98,490</p>
+    <button class="btn primary" onclick="buy('Model X','$98,490')">Buy Now</button>
+  </div>
 </div>
 
-<div class="car" onclick="selectCar(this, 'Model X - $150')">
-  <h2>Model X</h2>
-  <p>$150 per ride</p>
+<!-- MODEL Y -->
+<div id="y" class="section" style="background-image:url('https://images.unsplash.com/photo-1617704548623-340376564e68');">
+  <div class="overlay"></div>
+  <div class="content">
+    <h1>Model Y</h1>
+    <p>$43,990</p>
+    <button class="btn primary" onclick="buy('Model Y','$43,990')">Buy Now</button>
+  </div>
 </div>
 
-<div class="car" onclick="selectCar(this, 'Model Y - $110')">
-  <h2>Model Y</h2>
-  <p>$110 per ride</p>
+<!-- CYBERTRUCK -->
+<div id="c" class="section" style="background-image:url('https://images.unsplash.com/photo-1605559424843-9e4c2286bda1');">
+  <div class="overlay"></div>
+  <div class="content">
+    <h1>Cybertruck</h1>
+    <p>$60,990</p>
+    <button class="btn primary" onclick="buy('Cybertruck','$60,990')">Buy Now</button>
+  </div>
 </div>
 
-<div class="car" onclick="selectCar(this, 'Cybertruck - $200')">
-  <h2>Cybertruck</h2>
-  <p>$200 per ride</p>
-</div>
+<!-- MODAL -->
+<div id="modal">
+  <div class="modal-box">
+    <h2 id="carName"></h2>
+    <p id="carPrice"></p>
 
-<!-- BOOKING -->
-<div class="booking">
-  <h2>Book Your Ride</h2>
-  <input id="name" placeholder="Full Name">
-  <input id="email" placeholder="Email">
-  <input placeholder="Pickup Location">
-  <input placeholder="Drop-off Location">
-  <input type="datetime-local">
-  <button onclick="confirmBooking()">Continue</button>
-</div>
+    <input id="name" placeholder="Full Name">
+    <input id="email" placeholder="Email">
 
-<!-- PAYMENT -->
-<div id="payment">
-  <h2>Complete Payment</h2>
-  <p id="summary"></p>
-
-  <p><b>CashApp:</b> $yourname</p>
-  <p><b>PayPal:</b> paypal.me/yourname</p>
-
-  <button onclick="finishBooking()">I Have Paid</button>
+    <button class="btn primary" onclick="pay()">Continue</button>
+  </div>
 </div>
 
 <!-- ADMIN -->
 <div id="admin">
-  <h2>Admin Dashboard</h2>
-  <div id="bookings"></div>
+  <h2>Admin Orders</h2>
+  <div id="orders"></div>
 </div>
 
 <script>
-let selectedCar = "";
+let currentCar = "";
 
-function enterSite() {
-  document.getElementById("intro").style.display = "none";
+function buy(name, price) {
+  currentCar = name + " - " + price;
+  document.getElementById("carName").innerText = name;
+  document.getElementById("carPrice").innerText = price;
+  document.getElementById("modal").style.display = "flex";
 }
 
-function selectCar(el, car) {
-  document.querySelectorAll(".car").forEach(c => c.classList.remove("selected"));
-  el.classList.add("selected");
-  selectedCar = car;
-}
-
-function confirmBooking() {
+function pay() {
   let name = document.getElementById("name").value;
   let email = document.getElementById("email").value;
 
-  if (!selectedCar) {
-    alert("Please select a vehicle");
-    return;
-  }
+  let order = {name, email, car: currentCar};
 
-  let booking = { name, email, car: selectedCar };
-
-  let data = JSON.parse(localStorage.getItem("bookings") || "[]");
-  data.push(booking);
-  localStorage.setItem("bookings", JSON.stringify(data));
-
-  document.getElementById("summary").innerText =
-    name + " booked " + selectedCar;
-
-  document.getElementById("payment").style.display = "block";
-}
-
-function finishBooking() {
-  alert("Booking received. Confirmation email opening...");
+  let data = JSON.parse(localStorage.getItem("orders") || "[]");
+  data.push(order);
+  localStorage.setItem("orders", JSON.stringify(data));
 
   window.location.href =
-    "mailto:yourbrand.bookings@gmail.com?subject=LuxeDrive Booking&body=New booking request received.";
+  "mailto:yourbrand.bookings@gmail.com?subject=Car Purchase&body=" + name + " wants " + currentCar;
 
   loadAdmin();
 }
 
 function loadAdmin() {
-  let data = JSON.parse(localStorage.getItem("bookings") || "[]");
-  let container = document.getElementById("bookings");
+  let data = JSON.parse(localStorage.getItem("orders") || "[]");
+  let container = document.getElementById("orders");
   container.innerHTML = "";
 
-  data.forEach(b => {
-    container.innerHTML += `<p>${b.name} - ${b.car}</p>`;
+  data.forEach(o => {
+    container.innerHTML += `<p>${o.name} - ${o.car}</p>`;
   });
 
   document.getElementById("admin").style.display = "block";
